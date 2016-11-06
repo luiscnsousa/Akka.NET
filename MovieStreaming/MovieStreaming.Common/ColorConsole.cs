@@ -1,4 +1,4 @@
-﻿namespace MovieStreaming
+﻿namespace MovieStreaming.Common
 {
     using System;
 

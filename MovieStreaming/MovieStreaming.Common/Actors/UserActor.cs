@@ -1,4 +1,4 @@
-﻿namespace MovieStreaming.Actors
+﻿namespace MovieStreaming.Common.Actors
 {
     using System;
     using Akka.Actor;

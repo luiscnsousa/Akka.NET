@@ -1,4 +1,4 @@
-﻿namespace MovieStreaming.Exceptions
+﻿namespace MovieStreaming.Common.Exceptions
 {
     using System;
 

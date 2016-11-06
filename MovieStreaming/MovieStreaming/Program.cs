@@ -4,8 +4,9 @@
     using System.Threading.Tasks;
     using Akka.Actor;
     using Akka.Configuration;
-    using MovieStreaming.Actors;
-    using MovieStreaming.Messages;
+    using Common;
+    using Common.Actors;
+    using Common.Messages;
 
     class Program
     {
@@ -14,15 +15,14 @@
         static void Main(string[] args)
         {
             //MainAsync().Wait();
-
-            var config = ConfigurationFactory.ParseString("akka.suppress-json-serializer-warning = on");
-            HierarchyMainAsync(config).Wait();
+            
+            HierarchyMainAsync().Wait();
         }
 
-        static async Task HierarchyMainAsync(Config config)
+        static async Task HierarchyMainAsync()
         {
             ColorConsole.WriteLineGray("Creating MovieStreamingActorSystem");
-            MovieStreamingActorSystem = ActorSystem.Create("MovieStreamingActorSystem", config);
+            MovieStreamingActorSystem = ActorSystem.Create("MovieStreamingActorSystem");
 
             ColorConsole.WriteLineGray("Creating actor supervisory hierarchy");
             MovieStreamingActorSystem.ActorOf(Props.Create<PlaybackActor>(), "Playback");

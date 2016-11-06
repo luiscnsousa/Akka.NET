@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE8B203C-C949-4B5D-B8EF-12EBFAE80C89}</ProjectGuid>
+    <ProjectGuid>{337770E4-0434-432F-9934-9D7E0C2AD89C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MovieStreaming</RootNamespace>
-    <AssemblyName>MovieStreaming</AssemblyName>
+    <RootNamespace>MovieStreaming.Remote</RootNamespace>
+    <AssemblyName>MovieStreaming.Remote</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -75,11 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ActorsHierarchy.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MovieStreaming.Common\MovieStreaming.Common.csproj">
