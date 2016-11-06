@@ -4,6 +4,21 @@
 
     public static class ColorConsole
     {
+        public static void WriteLineWhite(string message)
+        {
+            WriteLineInDifferentColor(message, ConsoleColor.White);
+        }
+
+        public static void WriteLineMagenta(string message)
+        {
+            WriteLineInDifferentColor(message, ConsoleColor.Magenta);
+        }
+
+        public static void WriteLineGray(string message)
+        {
+            WriteLineInDifferentColor(message, ConsoleColor.Gray);
+        }
+
         public static void WriteLineCyan(string message)
         {
             WriteLineInDifferentColor(message, ConsoleColor.Cyan);

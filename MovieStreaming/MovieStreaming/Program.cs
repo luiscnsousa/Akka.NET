@@ -1,11 +1,9 @@
 ﻿namespace MovieStreaming
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Akka.Actor;
+    using Akka.Configuration;
     using MovieStreaming.Actors;
     using MovieStreaming.Messages;
 
@@ -15,7 +13,69 @@
 
         static void Main(string[] args)
         {
-            MainAsync().Wait();
+            //MainAsync().Wait();
+
+            var config = ConfigurationFactory.ParseString("akka.suppress-json-serializer-warning = on");
+            HierarchyMainAsync(config).Wait();
+        }
+
+        static async Task HierarchyMainAsync(Config config)
+        {
+            ColorConsole.WriteLineGray("Creating MovieStreamingActorSystem");
+            MovieStreamingActorSystem = ActorSystem.Create("MovieStreamingActorSystem", config);
+
+            ColorConsole.WriteLineGray("Creating actor supervisory hierarchy");
+            MovieStreamingActorSystem.ActorOf(Props.Create<PlaybackActor>(), "Playback");
+
+
+            do
+            {
+                await ShortPause();
+
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                ColorConsole.WriteLineGray("enter a command and hit enter");
+
+                var command = Console.ReadLine();
+                object message = null;
+
+                if (command.StartsWith("play"))
+                {
+                    var commandParts = command.Split(',');
+                    var userId = int.Parse(commandParts[1]);
+                    var movieTitle = commandParts[2];
+
+                    message = new PlayMovieMessage(movieTitle, userId);
+                }
+
+                if (command.StartsWith("stop"))
+                {
+                    var userId = int.Parse(command.Split(',')[1]);
+
+                    message = new StopMovieMessage(userId);
+                }
+
+                if (message != null)
+                {
+                    MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+                }
+
+                if (command == "exit")
+                {
+                    await MovieStreamingActorSystem.Terminate();
+                    await MovieStreamingActorSystem.WhenTerminated;
+                    ColorConsole.WriteLineGray("Actor system shutdown");
+                    Console.ReadKey();
+                    Environment.Exit(1);
+
+                }
+            }
+            while (true);
+        }
+
+        private static async Task ShortPause()
+        {
+            await Task.Delay(1000);
         }
 
         static async Task MainAsync()
@@ -30,10 +90,8 @@
 
             //Props playbackActorProps = Props.Create<PlaybackActor>();
             //IActorRef playbackActorRef = MovieStreamingActorSystem.ActorOf(playbackActorProps, "PlaybackActor");
-
-
-
-
+            
+            //------------------------------
 
             // [SENDING]
             Console.ReadKey();
@@ -61,9 +119,7 @@
             //playbackActorRef.Tell(new PlayMovieMessage("Codenan the Destroyer", 1));
             //playbackActorRef.Tell(PoisonPill.Instance); // the actor will process the previous messages and then take this poison pill
 
-
-
-
+            //------------------------------
 
             // [TERMINATING]
             //press any key to start shutdown of system

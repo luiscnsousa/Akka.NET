@@ -12,15 +12,18 @@
     {
         public PlaybackActor()
         {
-            Console.WriteLine("Creating a PlaybackActor");
-            
+            Context.ActorOf(Props.Create<UserCoordinatorActor>(), "UserCoordinator");
+            Context.ActorOf(Props.Create<PlaybackStatisticsActor>(), "PlaybackStatistics");
+
+            //Console.WriteLine("Creating a PlaybackActor");
+
             // with this second parameter, the actor will only handle a message with the specified UserId   <--
             //this.Receive<PlayMovieMessage>(
             //    message => HandlePlayMovieMessage(message), 
             //    message => message.UserId == 42);
 
-            this.Receive<PlayMovieMessage>(
-                message => HandlePlayMovieMessage(message));
+            //this.Receive<PlayMovieMessage>(
+            //    message => HandlePlayMovieMessage(message));
         }
 
         private void HandlePlayMovieMessage(PlayMovieMessage message)
@@ -46,6 +49,7 @@
         //    }
         //}
 
+        #region Lifecycle hooks
         protected override void PreStart()
         {
             ColorConsole.WriteLineGreen("PlaybackActor PreStart");
@@ -68,6 +72,7 @@
             ColorConsole.WriteLineGreen(string.Concat("PlaybackActor PostRestart because: ", reason));
 
             base.PostRestart(reason);
-        }
+        } 
+        #endregion
     }
 }
